@@ -1,13 +1,27 @@
 package array_ints
 
+import "fmt"
+
 // Task: find indexes of item pairs across two arrays adding up to a given total
+func UniqArrayInts(arr []int) []int {
+	umap := make(map[int]bool) // unique map
 
-// For first element
-// - scan the array looking for its compliment or
-// 	storing the numbers and their indexes
+	// For first element
+	lnArr := len(arr)
 
-// For the second onwards
-// Simply check if the compliment of the current number is known to our map
+	for i := 0; i < lnArr; i++ {
+		if _, ok := umap[arr[i]]; ok {
+			// remove the element from the array
+			arr[i] = arr[lnArr-1] // copy from the end
+			lnArr -= 1            // upper limit is one less
+			i -= 1                // keep the same index on the next iteration
+			continue
+		}
+		umap[arr[i]] = true // store the number in the map
+	}
 
-// Remove from the input array writing over the last item in the array
-//		- Shorten the array (len) by 1
+	arr = arr[:lnArr]
+	fmt.Println(arr)
+	fmt.Println("New length is", len(arr))
+	return arr
+}
