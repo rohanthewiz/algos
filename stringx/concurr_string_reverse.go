@@ -9,31 +9,36 @@ import (
 	"sync"
 )
 
-func StringReverse() {
-	wg := sync.WaitGroup{}
-	inCh := make(chan string, 128)
-	outCh := make(chan string, 128)
+func ReverseStrings() (rvsStrs []string) {
+	rvsStrs = make([]string, 0, 8)
 
 	inFile, err := os.Open("input_file.txt")
 	if err != nil {
 		log.Fatal("Error opening input file")
+		return
 	}
 
+	wg := sync.WaitGroup{}
+	inCh := make(chan string, 128)
+	outCh := make(chan string, 128)
+
 	// Start the second stage
-	go reverseString(inCh, outCh)
+	// Receive input from the inCh
+	// Return output over the outCh
+	go processStringReverse(inCh, outCh)
 
 	scanner := bufio.NewScanner(inFile)
 
 	for scanner.Scan() { // splits on lines by default
 		word := scanner.Text()
-		//fmt.Println(word)
 
 		wg.Add(1)
 		go func(wrd string) {
 			inCh <- wrd
 			wg.Done()
-		}(word)
+		}(word) // pass the current value in
 	}
+
 	if err := scanner.Err(); err != nil {
 		log.Println("Error while scanning input file")
 	}
@@ -43,34 +48,44 @@ func StringReverse() {
 
 	for wrd := range outCh {
 		fmt.Println("Word from output channel", wrd)
+		rvsStrs = append(rvsStrs, wrd)
+	}
+
+	return
+}
+
+func processStringReverse(inCh <-chan string, outCh chan<- string) {
+	// Get Unicode code points.
+	defer close(outCh)
+	for {
+		word, ok := <-inCh
+		fmt.Printf("Word from input channel \"%s\"\n", word)
+		if !ok { // channel is closed
+			return
+		}
+
+		outCh <- reverseString(word)
 	}
 }
 
-func reverseString(inCh <-chan string, outCh chan<- string) {
-	// Get Unicode code points.
-	defer func() {
-		close(outCh)
-	}()
-	for {
-		word, ok := <-inCh
-		if !ok || strings.TrimSpace(word) == "" {
-			return
-		}
-		fmt.Printf("Word from input channel \"%s\"\n", word)
-		rn := make([]rune, len(word))
-		n := 0
-		for _, r := range word {
-			rn[n] = r
-			n++
-		}
-		rn = rn[0:n]
-		// Reverse
-		for i := 0; i < n/2; i++ {
-			rn[i], rn[n-1-i] = rn[n-1-i], rn[i]
-		}
-		// Convert back to UTF-8.
-		out := string(rn)
-		//fmt.Println(out)
-		outCh <- out
+func reverseString(inStr string) (outStr string) {
+	if inStr = strings.TrimSpace(inStr); inStr == "" {
+		return
 	}
+
+	rn := make([]rune, len(inStr))
+	n := 0
+	for _, r := range inStr {
+		rn[n] = r
+		n++
+	}
+	rn = rn[0:n]
+	// Reverse
+	for i := 0; i < n/2; i++ {
+		rn[i], rn[n-1-i] = rn[n-1-i], rn[i]
+	}
+	// Convert back to UTF-8.
+	outStr = string(rn)
+
+	return
 }
