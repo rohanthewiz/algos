@@ -20,10 +20,10 @@ func Fib(n int) (fb int) {
 	a := 0 // holds the trailing value
 	fb = 1
 	for i := 2; i <= n; i++ {
-		//fmt.Println("n", n, "i", i, "a", a, "fb", fb)
-		b := fb    // save previous
-		fb = b + a // fib is the previous plus the trailing
-		a = b      // trailing becomes the previous
+		a, fb = fb, fb+a
+		// b := fb    // save previous
+		// fb = b + a // fib is the previous plus the trailing
+		// a = b      // trailing becomes the previous
 	}
 	return
 }

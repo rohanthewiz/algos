@@ -44,7 +44,6 @@ func BenchmarkLinearSearch(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		for i := 0; i < len(haystack); i++ {
 			if haystack[i] == needle {
-				//log.Println("found")
 				break
 			}
 		}

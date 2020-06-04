@@ -2,9 +2,9 @@ package array_ints
 
 import "fmt"
 
-// Task: find indexes of item pairs across two arrays adding up to a given total
+// Task: reduce the array to unique elements
 func UniqArrayInts(arr []int) []int {
-	umap := make(map[int]bool) // unique map
+	umap := make(map[int]bool, len(arr)) // eliminate possibility of alloc
 
 	// For first element
 	lnArr := len(arr)
