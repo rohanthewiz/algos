@@ -30,6 +30,7 @@ func strRecurSearch(arr []string, target string, lIdx, uIdx int) (result int) {
 		return -1
 	}
 
+	// TODO - Alleviate perf hit from memory alloc here - use some kind of channel pool
 	resultChan := make(chan int, 2)
 	mid := lIdx + (uIdx-lIdx)/2
 
