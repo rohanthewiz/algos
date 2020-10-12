@@ -8,22 +8,20 @@ type node struct {
 }
 
 type LinkedList struct {
-	head   *node
-	length int
+	head *node
 }
 
 // Make a new node the head of the list
 func (l *LinkedList) Prepend(n *node) {
 	n.next = l.head // the previous head becomes the next of the new node
 	l.head = n      // make the new node the head
-	l.length++
 }
 
 func (l LinkedList) Print() {
 	currNode := l.head
 
 	fmt.Print("H")
-	for i := 0; i < l.length; i++ {
+	for currNode != nil {
 		fmt.Printf("-> %d", currNode.data)
 		currNode = currNode.next
 	}
@@ -37,7 +35,7 @@ func (l *LinkedList) DeleteByValue(val int) (found bool) {
 	currNode := l.head
 	prevNode := l.head // we need to track this since the current node has no knowledge of the prev node, only the next
 
-	for i := 0; i < l.length; i++ {
+	for currNode != nil {
 		if currNode.data == val {
 			found = true
 			if currNode == l.head { // special case of first node since we start off with a tie
@@ -45,7 +43,6 @@ func (l *LinkedList) DeleteByValue(val int) (found bool) {
 			} else {
 				prevNode.next = currNode.next // join the prev with the next - current will be garbage collected
 			}
-			l.length--
 			break
 		}
 		prevNode = currNode
