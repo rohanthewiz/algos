@@ -8,6 +8,7 @@ type node struct {
 	prev *node
 }
 
+// Using a doubly linked list here for O(1) enqueue and dequeue
 type Queue struct {
 	head *node
 	tail *node
@@ -50,12 +51,13 @@ func (q *Queue) Print() {
 	fmt.Println("")
 }
 
+// Get the next node from the queue
 func (q *Queue) Dequeue() (lastNode *node) {
 	if q.tail == nil {
 		return
 	}
 
-	lastNode = q.tail
+	lastNode = q.tail // save it for return
 
 	// Rewire tail and penultimate node
 	q.tail = lastNode.prev // even if it is nil as in the case of one item in queue
