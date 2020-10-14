@@ -1,3 +1,3 @@
 # Linked Lists
 - Fast on updates
-- Slow on retreivals
+- Slow on retreivals - unless doubly linked
