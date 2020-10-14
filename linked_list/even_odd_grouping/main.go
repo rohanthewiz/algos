@@ -5,18 +5,18 @@ import "fmt"
 // Given a linked list. Group even indexed items at the start of the linked linked list followed by odd indices
 
 // Solution algorithm: (we will move even indexed values from a lower pointer to an upper destination)
-// Upper pointer points to where I want to land nodes. We will increment this by one after the copy
+// Upper pointer points to where I want to land nodes. We will advance this by one after the copy.
 // Lower pointer points to the node whose next node we want to move.
 // After the move we only have to advance one, because the next node was removed
 
 // 43->15->13->20->6->17->18->22->33->11->Null
 // u->43, l->15 -- l.next is 13, so move it to after upr (43), then advance upr and lwr
-// 43->13->15->20->6->17->18->22->33->11->Null -- at i=1 remove i +1 and insert at i
+// 43->13->15->20->6->17->18->22->33->11->Null
 // u ->13, l->20 -- l.next is 6, move it to after upr (13), then advance upr and lwr
-// 43->13->6->15->20->17->18->22->33->11->Null -- at i=2 remove i +2 and insert at i
+// 43->13->6->15->20->17->18->22->33->11->Null
 // u -> 6, l->17 -- rinse and rpt
-// 43->13->6->18->15->20->17->22->33->11->Null -- at i=3 remove i +3 and insert at i
-// 43->13->6->18->33->15->20->17->22->11->Null -- at i=4 remove i +4 and insert at i
+// 43->13->6->18->15->20->17->22->33->11->Null
+// 43->13->6->18->33->15->20->17->22->11->Null
 
 type node struct {
 	data int
