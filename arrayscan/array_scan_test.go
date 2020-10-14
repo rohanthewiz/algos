@@ -8,4 +8,10 @@ func TestPairsSumNearToTarget(t *testing.T) {
 
 	idx1, idx2 := PairsSumNearToTarget(arr1, arr2, 17)
 	t.Log("idx1", idx1, "idx2", idx2)
+
+	arr3 := []int{2, 3, 4, 5, 6, 7, 8, 9, 0, 1}
+	arr4 := []int{10, 2, 11, 5, 7, 4, 8, 4, 3, 4, 1}
+
+	idx1, idx2 = PairsSumNearToTarget(arr3, arr4, 22)
+	t.Log("idx1", idx1, "idx2", idx2)
 }
