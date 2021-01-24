@@ -52,29 +52,58 @@ func (l *LinkedList) DeleteByValue(val int) (found bool) {
 	return
 }
 
+// Search for node by value and delete
+// Return error if not found
+func (l *LinkedList) DeleteByValue2(val int) (found bool) {
+	if l.head == nil { // empty linked list
+		return
+	}
+	if l.head.data == val { // val we are deleting is the head
+		l.head = l.head.next
+		return true
+	}
+
+	for currNode := l.head; currNode.next != nil; currNode = currNode.next {
+		if currNode.next.data == val {
+			found = true
+			currNode.next = currNode.next.next // remove the next
+			return
+		}
+	}
+	return
+}
+
+// The address of the thing holding the ptr to the next thing is the previous thing
+// In the case of head it is the address of the linked list attribute head
+// In the case of any other node, it is the address of the "next" attribute holding the ptr to the next node, i.e. the [prev] node
+func (l *LinkedList) DeleteByValue3(val int) (found bool) {
+	for holderPtr := &l.head; *holderPtr != nil; holderPtr = &(*holderPtr).next {
+		if (*holderPtr).data == val {
+			*holderPtr = (*holderPtr).next // delete
+			found = true
+			return
+		}
+	}
+	return
+}
+
 func main() {
 	ll := LinkedList{}
 	ll.Prepend(&node{data: 29})
 	ll.Prepend(&node{data: 17})
 	ll.Prepend(&node{data: 3})
-	fmt.Printf("ll->%#v\n", ll)
-	_ = ll.DeleteByValue(17)
 	ll.Print()
-	_ = ll.DeleteByValue(3)
+	_ = ll.DeleteByValue3(17)
+	_ = ll.DeleteByValue3(3)
 	ll.Print()
 	ll.Prepend(&node{data: 13})
 	ll.Print()
-	_ = ll.DeleteByValue(29)
+	_ = ll.DeleteByValue3(29)
 	ll.Print()
-	found := ll.DeleteByValue(23)
+	_ = ll.DeleteByValue3(13) // deleting the only node should not panic
+	ll.Print()
+	found := ll.DeleteByValue(10) // deleting a non existent value should not panic
 	if !found {
-		fmt.Println("23 was not found")
+		fmt.Println("10 was not found")
 	}
-	ll.Print()
-
-	found = ll.DeleteByValue(13)
-	if !found {
-		fmt.Println("13 was not found")
-	}
-	ll.Print()
 }

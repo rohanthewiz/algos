@@ -42,6 +42,7 @@ func (n node) Print() {
 	}
 }
 
+// Search depth first
 func (n node) Search(key int) (foundNode *node) {
 	if n.key == key {
 		return &n
@@ -59,6 +60,15 @@ func (n node) Search(key int) (foundNode *node) {
 			}
 		}
 	}
+	return
+}
+
+// Search Breath First - TODO
+func (n node) BSearch(key int) (foundNode *node) {
+	// for
+	// We must start at the root node - it is our only point of ref
+	// traverse down - one level -> get left, get right
+
 	return
 }
 
