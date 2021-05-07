@@ -26,8 +26,11 @@ func (s Stack) Print() {
 	fmt.Println("")
 }
 
-// Pop
+// Pop -- TODO return (value, ok)
 func (s *Stack) Pop() (item int) {
+	if len(s.items) < 1 {
+		return -1
+	}
 	lastIdx := len(s.items) - 1
 
 	item = s.items[lastIdx] // we'll return the last item
